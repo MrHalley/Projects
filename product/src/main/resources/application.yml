@@ -4,8 +4,15 @@ spring:
     password: root
     url: jdbc:mysql://192.168.56.10:3306/pms
     driver-class-name: com.mysql.jdbc.Driver
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+  application:
+    name: mall-product
 mybatis-plus:
   mapper-locations: /mapper/**/*.xml
   global-config:
     db-config:
       id-type: auto #自增主键
+server:
+  port: 10000

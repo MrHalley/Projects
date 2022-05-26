@@ -15,6 +15,7 @@ import com.example.member.service.MemberService;
 import com.example.common.utils.PageUtils;
 import com.example.common.utils.R;
 
+import javax.annotation.Resource;
 
 
 /**

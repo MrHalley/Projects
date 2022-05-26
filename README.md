@@ -127,3 +127,15 @@ CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS      
 //启动docker自启动redis
 # docker update redis --restart=always
 ```
+## SpringCloudAlibaba
+
+[spring-cloud-alibaba github](https://github.com/alibaba/spring-cloud-alibaba/blob/2.2.x/README-zh.md)
+
+### Nacos Discovery
+
+####  使用教程
+
+```shell
+//启动nacos 单机版(windows)
+# startup.cmd -m standalone
+```

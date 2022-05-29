@@ -1,4 +1,4 @@
-# mall
+# 谷粒商城
 
 ## Vagrant
 
@@ -52,7 +52,7 @@ Bringing machine 'default' up with 'vmware_desktop' provider...
 
 [镜像仓库Docker Hub](https://hub.docker.com/)
 
-> docker 基本命令
+>docker 基本命令
 
 ```shell
 // 开机自启动docker
@@ -65,9 +65,10 @@ Bringing machine 'default' up with 'vmware_desktop' provider...
 # docker ps -a
 ```
 
-> docker 安装Mysql
+>docker 安装Mysql
 
 ```shell
+
 // 下载镜像
 # docker pull mysql:5.7
 
@@ -118,7 +119,7 @@ CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS      
 # mkdir -p /mydata/redis/conf
 //创建空 redis.conf文件
 # touch /mydata/redis/conf/redis.conf
-# docker run -p 6379:6379 --name redis -v /mydata/redis/data:data \
+# docker run -p 6379:6379 --name redis -v /mydata/redis/data:/data \
 -v /mydata/redis/conf/redis.conf:/etc/redis/redis.conf \
 -d redis redis-server /etc/redis/redis.conf
 //docker执行redis镜像 redis-cli 命令连接
@@ -127,15 +128,23 @@ CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS      
 //启动docker自启动redis
 # docker update redis --restart=always
 ```
-## SpringCloudAlibaba
 
-[spring-cloud-alibaba github](https://github.com/alibaba/spring-cloud-alibaba/blob/2.2.x/README-zh.md)
+## [SpringCloudAlibaba](https://github.com/alibaba/spring-cloud-alibaba/blob/2.2.x/README-zh.md)
 
-### Nacos Discovery
+### Nacos
+
+ [Nacos Discovery](https://github.com/alibaba/spring-cloud-alibaba/blob/2.2.x/spring-cloud-alibaba-examples/nacos-example/nacos-discovery-example/readme-zh.md)
+
+ [Nacos Config](https://github.com/alibaba/spring-cloud-alibaba/blob/2.2.x/spring-cloud-alibaba-examples/nacos-example/nacos-config-example/readme-zh.md)
 
 ####  使用教程
 
 ```shell
 //启动nacos 单机版(windows)
 # startup.cmd -m standalone
+
+//nacos 注册中心可视化界面 http://localhost:8848/nacos 默认账号密码 nacos nacos
 ```
+> 配置中心
+
+![配置中心](https://typora-images-repository.oss-cn-beijing.aliyuncs.com/mall/20220529165514.png)

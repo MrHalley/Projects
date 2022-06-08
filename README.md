@@ -147,4 +147,6 @@ CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS      
 ```
 > 配置中心
 
-![配置中心](https://typora-images-repository.oss-cn-beijing.aliyuncs.com/mall/20220529165514.png)
+![配置中心](https://typora-images-repository.oss-cn-beijing.aliyuncs.com/mall/notes/20220529165514.png)
+
+## [跨源资源共享（CORS）](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS)

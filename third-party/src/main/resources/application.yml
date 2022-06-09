@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: mall-third-party
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    alicloud:
+      access-key: LTAI5tSnJiirdHqo74AAaN6p
+      secret-key: yP73prlWsgjY1P466pJvWOaABidksB
+      oss:
+        endpoint: oss-cn-beijing.aliyuncs.com
+        bucket: typora-images-repository
+server:
+  port: 30000

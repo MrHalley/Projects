@@ -1,6 +1,7 @@
 package com.example.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,14 @@ import com.example.common.utils.R;
 public class CategoryController {
     @Autowired
     private CategoryService categoryService;
-
+    /**
+     * 查出所有分类以及子分类，以树形结构组装起来
+     */
+    @RequestMapping("/list/tree")
+    public R list(){
+        List<CategoryEntity> entities = categoryService.listWithTree();
+        return R.ok().put("data", entities);
+    }
     /**
      * 列表
      */
@@ -58,6 +66,17 @@ public class CategoryController {
     public R save(@RequestBody CategoryEntity category){
 		categoryService.save(category);
 
+        return R.ok();
+    }
+
+    /**
+     * 批量更新
+     * @param category
+     * @return
+     */
+    @RequestMapping("/update/sort")
+    public R updateSort(@RequestBody CategoryEntity[] category){
+        categoryService.updateBatchById(Arrays.asList(category));
         return R.ok();
     }
 

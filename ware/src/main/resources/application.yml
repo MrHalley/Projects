@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://192.168.56.10:3306/wms
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis-plus:
+  mapper-locations: /mapper/**/*.xml
+  global-config:
+    db-config:
+      id-type: auto #自增主键
+server:
+  port: 11000

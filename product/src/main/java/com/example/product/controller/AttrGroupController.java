@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.product.entity.AttrEntity;
+import com.example.product.service.AttrAttrgroupRelationService;
 import com.example.product.service.AttrService;
 import com.example.product.service.CategoryService;
+import com.example.product.vo.AttrGroupRelationVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +38,34 @@ public class AttrGroupController {
 
     @Resource
     private AttrService attrService;
+
+    @Resource
+    AttrAttrgroupRelationService relationService;
+
+    /**
+     * 添加分组属性关联
+     *
+     * @param vos
+     * @return
+     */
+    @PostMapping("/attr/relation")
+    public R addRelation(@RequestBody List<AttrGroupRelationVo> vos){
+        relationService.saveBatch(vos);
+        return R.ok();
+    }
+
+    /**
+     * 删除分组属性关联
+     *
+     * @param vos
+     * @return
+     */
+    @PostMapping("/attr/relation/delete")
+    public R deleteRelation(@RequestBody  AttrGroupRelationVo[] vos){
+        attrService.deleteRelation(vos);
+        return R.ok();
+    }
+
     /**
      * 列表
      */

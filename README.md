@@ -157,3 +157,14 @@ CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS      
 
 [oss-sdk](https://help.aliyun.com/document_detail/32011.html)
 
+
+
+## Mysql
+
+### 事务
+
+```sql
+-- 设置当前会话事务隔离级别
+SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+```
+

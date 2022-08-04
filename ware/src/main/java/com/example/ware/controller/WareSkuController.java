@@ -31,7 +31,7 @@ public class WareSkuController {
     private WareSkuService wareSkuService;
 
     /**
-     * 列表
+     * 查询商品库存信息列表
      */
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){

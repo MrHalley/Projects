@@ -31,7 +31,7 @@ public class PurchaseDetailController {
     private PurchaseDetailService purchaseDetailService;
 
     /**
-     * 列表
+     * 查询采购单信息列表
      */
     @RequestMapping("/list")
     public R list(@RequestParam Map<String, Object> params){

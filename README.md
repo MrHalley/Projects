@@ -129,6 +129,67 @@ CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS      
 # docker update redis --restart=always
 ```
 
+
+
+> docker 安装ElasticSearch和Kibana
+```shell
+// 1.下载ealastic search和kibana
+# docker pull elasticsearch:7.4.2
+# docker pull kibana:7.4.2
+// 2.配置
+# mkdir -p /mydata/elasticsearch/config  #创建目录
+# mkdir -p /mydata/elasticsearch/data
+# echo "http.host: 0.0.0.0" >/mydata/elasticsearch/config/elasticsearch.yml
+# chmod -R 777 /mydata/elasticsearch/ # 将mydata/elasticsearch/文件夹中文件都可读可写
+
+//3.启动Elastic search
+# docker run --name elasticsearch -p 9200:9200 -p 9300:9300 \
+-e  "discovery.type=single-node" \
+-e ES_JAVA_OPTS="-Xms64m -Xmx512m" \
+-v /mydata/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml \
+-v /mydata/elasticsearch/data:/usr/share/elasticsearch/data \
+-v  /mydata/elasticsearch/plugins:/usr/share/elasticsearch/plugins \
+-d elasticsearch:7.4.2 
+
+
+//4.设置开机启动elasticsearch
+# docker update elasticsearch --restart=always
+
+//5.启动kibana
+# docker run --name kibana -e ELASTICSEARCH_HOSTS=http://192.168.56.10:9200 -p 5601:5601 -d kibana:7.4.2
+
+//6.测试 
+	--> 查看elasticsearch版本信息： http://192.168.56.10:9200/ 
+	--> 访问Kibana： http://192.168.56.10:5601/app/kibana 
+```
+
+
+
+> docker 安装nginx
+
+``` shell
+//1.随便启动一个 nginx 实例，只是为了复制出配置
+# docker run -p 80:80 --name nginx -d nginx:1.10
+
+//2.将容器内的配置文件拷贝到当前目录：
+# docker container cp nginx:/etc/nginx .
+
+//3.修改文件名称：mv nginx conf 把这个 conf 移动到/mydata/nginx 下
+
+//4.终止原容器：
+# docker stop nginx
+//5.执行命令删除原容器：
+# docker rm $ContainerId
+//6.创建新的 nginx；执行以下命令
+# docker run -p 80:80 --name nginx \
+-v /mydata/nginx/html:/usr/share/nginx/html \
+-v /mydata/nginx/logs:/var/log/nginx \
+-v /mydata/nginx/conf:/etc/nginx \
+-d nginx:1.10
+```
+
+
+
 ## [SpringCloudAlibaba](https://github.com/alibaba/spring-cloud-alibaba/blob/2.2.x/README-zh.md)
 
 ### [Nacos 文档](https://nacos.io/zh-cn/docs/quick-start-docker.html)
@@ -168,3 +229,17 @@ CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS      
 SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 ```
 
+
+
+## ElasticSearch
+
+> 自定义词库
+
+```shell
+//1.安装nginx。创建字典
+
+//2.修改/mydata/elasticsearch/plugins/ik/config/中的 IKAnalyzer.cfg.xml 配置远程拓展字典
+
+//3.更新完成后，es 只会对新增的数据用新词分词。历史数据是不会重新分词的。如果想要历史数据重新分词。需要执行：
+# POST my_index/_update_by_query?conflicts=proceed
+```

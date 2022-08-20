@@ -42,6 +42,21 @@ Bringing machine 'default' up with 'vmware_desktop' provider...
 //
 ```
 
+## Linux
+
+### 使用教程
+
+> 基本命令
+
+```shell
+// vim查看行号
+# :set nu
+```
+
+
+
+
+
 ## Docker
 
 ### 使用教程
@@ -63,6 +78,9 @@ Bringing machine 'default' up with 'vmware_desktop' provider...
 
 // 查看docker所有容器
 # docker ps -a
+
+// 查看日志
+# docker logs <container>
 ```
 
 >docker 安装Mysql
@@ -243,3 +261,16 @@ SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
 //3.更新完成后，es 只会对新增的数据用新词分词。历史数据是不会重新分词的。如果想要历史数据重新分词。需要执行：
 # POST my_index/_update_by_query?conflicts=proceed
 ```
+## [Nginx]([nginx](http://nginx.org/en/))
+
+
+
+## 性能监控
+
+jvisualvm、jconsole
+
+
+
+## 压力测试
+
+JMeter

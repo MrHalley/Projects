@@ -1,9 +1,15 @@
 package com.example.product.web;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.product.entity.CategoryEntity;
 import com.example.product.service.CategoryService;
 import com.example.product.vo.Catelog2Vo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +28,9 @@ public class IndexController {
     @Resource
     private CategoryService categoryService;
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     @GetMapping(value = {"/","index.html"})
     private String indexPage(Model model) {
         //1、查出所有的一级分类
@@ -31,13 +40,24 @@ public class IndexController {
     }
 
 
-    //index/json/catalog.json
+    /**
+     * 加redis缓存，提升吞吐量
+     *
+     * @return
+     */
     @GetMapping(value = "/index/catalog.json")
     @ResponseBody
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
-        Map<String, List<Catelog2Vo>> catalogJson = categoryService.getCatalogJson();
-
-        return catalogJson;
+        String catalogJson = stringRedisTemplate.opsForValue().get("catalogJson");
+        if(StringUtils.isEmpty(catalogJson)){
+            Map<String, List<Catelog2Vo>> catalogJsonFromDb = categoryService.getCatalogJsonFromDb();
+            catalogJson = JSON.toJSONString(catalogJsonFromDb);
+            stringRedisTemplate.opsForValue().setIfAbsent("catalogJson",catalogJson);
+            return catalogJsonFromDb;
+        }
+        Map<String, List<Catelog2Vo>> result = JSON.parseObject(catalogJson, new TypeReference<Map<String, List<Catelog2Vo>>>() {
+        });
+        return result;
     }
 
     @GetMapping(value = "/hello")

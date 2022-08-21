@@ -1,8 +1,12 @@
 package com.example.product.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.example.product.service.CategoryBrandRelationService;
 import com.example.product.vo.Catelog2Vo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +33,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Resource
     CategoryBrandRelationService categoryBrandRelationService;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -83,7 +90,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
-    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+    public Map<String, List<Catelog2Vo>> getCatalogJsonFromDb() {
         System.out.println("查询了数据库");
         //将数据库的多次查询变为一次
         List<CategoryEntity> selectList = this.baseMapper.selectList(null);

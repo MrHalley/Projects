@@ -50,9 +50,7 @@ public class IndexController {
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
         String catalogJson = stringRedisTemplate.opsForValue().get("catalogJson");
         if(StringUtils.isEmpty(catalogJson)){
-            Map<String, List<Catelog2Vo>> catalogJsonFromDb = categoryService.getCatalogJsonFromDb();
-            catalogJson = JSON.toJSONString(catalogJsonFromDb);
-            stringRedisTemplate.opsForValue().setIfAbsent("catalogJson",catalogJson);
+            Map<String, List<Catelog2Vo>> catalogJsonFromDb = categoryService.getCatalogJsonFromDbWithRedisLock();
             return catalogJsonFromDb;
         }
         Map<String, List<Catelog2Vo>> result = JSON.parseObject(catalogJson, new TypeReference<Map<String, List<Catelog2Vo>>>() {

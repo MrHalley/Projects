@@ -277,7 +277,7 @@ JMeter
 
 
 
-## Redis
+## [Redis](https://redis.io/)
 
 > 缓存问题
 
@@ -286,4 +286,8 @@ JMeter
 | 缓存穿透 | 访问一个一定不存在的key，导致所有请求访问到DB，失去缓存的意义   | null结果缓存，添加失效时间      |
 | 缓存雪崩 | 大量key在同一时间失效，导致大量数据请求访问到DB，DB压力过大雪崩 | 设置随机失效时间，不让大量key一起失效 |
 | 缓存击穿 | 热点key失效，导致短时间大量请求直接到DB              | 加锁，只允许一个请求访问数据库      |
+
+### [Redission](https://github.com/redisson/redisson)
+
+
 

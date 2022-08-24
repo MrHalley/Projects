@@ -291,3 +291,15 @@ JMeter
 
 
 
+
+
+## [SpringCache(缓存)](https://docs.spring.io/spring-framework/docs/current/reference/html/integration.html#cache)
+
+解决缓存数据库之间最终一致性问题：双写模式、失效模式
+
+双写模式：写完数据库后，就写缓存。
+
+失效模式：写完数据库后，删除缓存。
+
+两者都无法保证及时一致性，要保证及时一致性，需要读写锁
+

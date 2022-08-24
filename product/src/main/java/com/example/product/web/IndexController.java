@@ -51,14 +51,8 @@ public class IndexController {
     @GetMapping(value = "/index/catalog.json")
     @ResponseBody
     public Map<String, List<Catelog2Vo>> getCatalogJson() {
-        String catalogJson = stringRedisTemplate.opsForValue().get("catalogJson");
-        if(StringUtils.isEmpty(catalogJson)){
-            Map<String, List<Catelog2Vo>> catalogJsonFromDb = categoryService.getCatalogJsonFromDbWithRedisLock();
-            return catalogJsonFromDb;
-        }
-        Map<String, List<Catelog2Vo>> result = JSON.parseObject(catalogJson, new TypeReference<Map<String, List<Catelog2Vo>>>() {
-        });
-        return result;
+        Map<String, List<Catelog2Vo>> catalogJson = categoryService.getCatalogJson();
+        return catalogJson;
     }
 
     @GetMapping(value = "/hello")

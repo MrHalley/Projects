@@ -48,6 +48,10 @@ spring:
           uri: lb://mall-product
           predicates:
             - Host=mall.com
+        - id: search_host_route
+          uri: lb://mall-search
+          predicates:
+            - Host=search.mall.com
 ## 前端项目， /api
 ## http://localhost:88/api/captcha.jpg 转 http://renren-fast:8080/api/captcha.jpg 路径重写 http://localhost:8080/renren-fast/captcha.jpg
 server:

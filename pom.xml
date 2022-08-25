@@ -17,5 +17,8 @@
         <module>renren-fast</module>
         <module>renren-generator</module>
         <module>common</module>
+        <module>third-party</module>
+        <module>search</module>
+        <module>gateway</module>
     </modules>
 </project>

@@ -1,5 +1,6 @@
 package com.example.authserver.feign;
 
+import com.example.authserver.vo.UserLoginVo;
 import com.example.authserver.vo.UserRegisterVo;
 import com.example.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,4 +13,7 @@ public interface MemberFeignService {
 
     @PostMapping(value = "/member/member/register")
     R register(@RequestBody UserRegisterVo vo);
+    @PostMapping(value = "/member/member/login")
+    R login(@RequestBody UserLoginVo vo);
+
 }

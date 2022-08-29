@@ -3,6 +3,7 @@ package com.example.authserver.controller;
 import com.alibaba.fastjson.TypeReference;
 import com.example.authserver.feign.MemberFeignService;
 import com.example.authserver.feign.ThirdPartFeignService;
+import com.example.authserver.vo.UserLoginVo;
 import com.example.authserver.vo.UserRegisterVo;
 import com.example.common.constant.AuthServerConstant;
 import com.example.common.exception.BizCodeEnum;
@@ -20,11 +21,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static com.example.common.constant.AuthServerConstant.LOGIN_USER;
 
 @Controller
 public class LoginController {
@@ -112,6 +116,21 @@ public class LoginController {
             errors.put("code","验证码错误");
             attributes.addFlashAttribute("errors",errors);
             return "redirect:http://auth.mall.com/reg.html";
+        }
+    }
+
+    @PostMapping(value = "/login")
+    public String login(UserLoginVo vo, RedirectAttributes attributes, HttpSession session) {
+        //远程登录
+        R login = memberFeignService.login(vo);
+
+        if (login.getCode() == 0) {
+            return "redirect:http://mall.com";
+        } else {
+            Map<String,String> errors = new HashMap<>();
+            errors.put("msg",login.getData("msg",new TypeReference<String>(){}));
+            attributes.addFlashAttribute("errors",errors);
+            return "redirect:http://auth.mall.com/login.html";
         }
     }
 }

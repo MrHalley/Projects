@@ -5,6 +5,7 @@ import com.example.common.utils.PageUtils;
 import com.example.member.entity.MemberEntity;
 import com.example.member.exception.PhoneException;
 import com.example.member.exception.UsernameException;
+import com.example.member.vo.MemberUserLoginVo;
 import com.example.member.vo.MemberUserRegisterVo;
 
 import java.util.Map;
@@ -38,5 +39,12 @@ public interface MemberService extends IService<MemberEntity> {
      * @return
      */
     void checkUserNameUnique(String userName) throws UsernameException;
+
+    /**
+     * 用户登录
+     * @param vo
+     * @return
+     */
+    MemberEntity login(MemberUserLoginVo vo);
 }
 

@@ -10,5 +10,9 @@ spring:
       oss:
         endpoint: oss-cn-beijing.aliyuncs.com
         bucket: typora-images-repository
+      sms:
+        host: https://gyytz.market.alicloudapi.com
+        path: /sms/smsSend
+        appcode: f3752c9428154fdb93d70dd9c4929f37
 server:
   port: 30000

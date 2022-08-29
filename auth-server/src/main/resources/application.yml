@@ -1,0 +1,13 @@
+server:
+  port: 8150
+spring:
+  application:
+    name: mall-auth-server
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  thymeleaf:
+    cache: false
+  redis:
+    host: 192.168.56.10

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 import com.example.common.exception.BizCodeEnum;
+import com.example.common.vo.GiteeToken;
 import com.example.member.exception.PhoneException;
 import com.example.member.exception.UsernameException;
 import com.example.member.vo.MemberUserLoginVo;
@@ -56,6 +57,16 @@ public class MemberController {
     }
 
 
+    @PostMapping(value = "/giteeLogin")
+    public R giteeLogin(@RequestBody GiteeToken giteeToken) throws Exception {
+        MemberEntity memberEntity = memberService.login(giteeToken);
+
+        if (memberEntity != null) {
+            return R.ok().setData(memberEntity);
+        } else {
+            return R.error(BizCodeEnum.LOGINACCT_PASSWORD_EXCEPTION.getCode(),BizCodeEnum.LOGINACCT_PASSWORD_EXCEPTION.getMsg());
+        }
+    }
     /**
      * 列表
      */

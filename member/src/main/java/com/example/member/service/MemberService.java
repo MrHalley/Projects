@@ -2,12 +2,14 @@ package com.example.member.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.common.utils.PageUtils;
+import com.example.common.vo.GiteeToken;
 import com.example.member.entity.MemberEntity;
 import com.example.member.exception.PhoneException;
 import com.example.member.exception.UsernameException;
 import com.example.member.vo.MemberUserLoginVo;
 import com.example.member.vo.MemberUserRegisterVo;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -46,5 +48,12 @@ public interface MemberService extends IService<MemberEntity> {
      * @return
      */
     MemberEntity login(MemberUserLoginVo vo);
+
+    /**
+     * gitee登录
+     * @param vo
+     * @return
+     */
+    MemberEntity login(GiteeToken vo) throws Exception;
 }
 

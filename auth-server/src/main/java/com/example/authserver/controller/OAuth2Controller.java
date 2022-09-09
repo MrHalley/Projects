@@ -32,6 +32,9 @@ public class OAuth2Controller {
 
     @GetMapping(value = "/oauth2.0/gitee/success")
     public String weibo(@RequestParam("code") String code, HttpSession session) throws Exception {
+        if(session.getAttribute(LOGIN_USER) != null){
+            return "redirect:http://mall.com";
+        }
 
         Map<String, String> map = new HashMap<>();
         map.put("client_id","65156c8b1a06dc06fc7c8ae50c8c5494c03e857e1833cf6d8c3f24e74a11b09a");

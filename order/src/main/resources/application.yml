@@ -9,6 +9,17 @@ spring:
       server-addr: 127.0.0.1:8848
   application:
     name: mall-order
+  rabbitmq:
+    host: 192.168.56.10
+    virtual-host: /
+    publisher-confirm-type: correlated #开启发送端消息抵达broker确认
+    publisher-returns: true #开启发送端消息抵达Queue确认
+    template:
+      mandatory: true #只要消息抵达Queue，就会异步发送优先回调returnfirm
+    listener:
+      simple:
+        acknowledge-mode: manual #手动ack消息，不使用默认的消费端确认
+
 mybatis-plus:
   mapper-locations: /mapper/**/*.xml
   global-config:

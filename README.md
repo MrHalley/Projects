@@ -53,7 +53,9 @@ Bringing machine 'default' up with 'vmware_desktop' provider...
 # :set nu
 ```
 
+> 命令详解
 
+[tar 解压缩命令详解](https://blog.csdn.net/example440982/article/details/51712973)
 
 
 
@@ -302,4 +304,19 @@ JMeter
 失效模式：写完数据库后，删除缓存。
 
 两者都无法保证及时一致性，要保证及时一致性，需要读写锁
+
+
+
+## Windows
+
+基本命令
+
+```shell
+// 查看端口占用
+# netstat -ano | findstr <port>
+// 查看进程
+# tasklist | findstr <taskno>
+// 杀死进程
+# taskkill 
+```
 

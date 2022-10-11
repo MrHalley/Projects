@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -123,15 +124,16 @@ public class LoginController {
 
 
     @GetMapping(value = "/login.html")
-    public String loginPage(HttpSession session) {
+    public String loginPage(HttpSession session, Model model, @RequestParam(value = "redirect_url",required = false) String redirectUrl) {
 
         //从session先取出来用户的信息，判断用户是否已经登录过了
         Object attribute = session.getAttribute(LOGIN_USER);
         //如果用户没登录那就跳转到登录页面
         if (attribute == null) {
+            model.addAttribute("redirectUrl",redirectUrl);
             return "login";
         } else {
-            return "redirect:http://gulimall.com";
+            return "redirect:http://mall.com";
         }
 
     }
@@ -158,6 +160,6 @@ public class LoginController {
     public String logout(HttpServletRequest request) {
         request.getSession().removeAttribute(LOGIN_USER);
         request.getSession().invalidate();
-        return "redirect:http://gulimall.com";
+        return "redirect:http://mall.com";
     }
 }

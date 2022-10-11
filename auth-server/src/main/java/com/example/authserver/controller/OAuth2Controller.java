@@ -8,6 +8,7 @@ import com.example.common.utils.HttpUtils;
 import com.example.common.utils.R;
 import com.example.common.vo.MemberResponseVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class OAuth2Controller {
 
 
     @GetMapping(value = "/oauth2.0/gitee/success")
-    public String weibo(@RequestParam("code") String code, HttpSession session) throws Exception {
+    public String weibo(@RequestParam("code") String code, HttpSession session,@RequestParam(value = "redirect_url",required = false) String redirectUrl) throws Exception {
         if(session.getAttribute(LOGIN_USER) != null){
             return "redirect:http://mall.com";
         }
@@ -40,7 +41,11 @@ public class OAuth2Controller {
         map.put("client_id","65156c8b1a06dc06fc7c8ae50c8c5494c03e857e1833cf6d8c3f24e74a11b09a");
         map.put("client_secret","71471d4200d3d65c9b676cdb5214a4ff70c0aa6d43a775fe246e76fe3414078f");
         map.put("grant_type","authorization_code");
-        map.put("redirect_uri","http://auth.mall.com/oauth2.0/gitee/success");
+        if(StringUtils.isNotEmpty(redirectUrl)){
+            map.put("redirect_uri","http://auth.mall.com/oauth2.0/gitee/success?redirect_url="+redirectUrl);
+        }else{
+            map.put("redirect_uri","http://auth.mall.com/oauth2.0/gitee/success");
+        }
         map.put("code",code);
 
         //1、根据用户授权返回的code换取access_token
@@ -68,6 +73,10 @@ public class OAuth2Controller {
                 //TODO 2、使用JSON的序列化方式来序列化对象到Redis中
                 session.setAttribute(LOGIN_USER,data);
 
+                //跳转地址，跳回原来的页面（默认首页）
+                if(StringUtils.isNotEmpty(redirectUrl)){
+                    return "redirect:http://"+redirectUrl;
+                }
                 //2、登录成功跳回首页
                 return "redirect:http://mall.com";
             } else {

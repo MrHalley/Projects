@@ -81,7 +81,11 @@
         <div class="si_out">
             <ul>
                 <li>
-                    <a href="https://gitee.com/oauth/authorize?client_id=65156c8b1a06dc06fc7c8ae50c8c5494c03e857e1833cf6d8c3f24e74a11b09a&redirect_uri=http://auth.mall.com/oauth2.0/gitee/success&response_type=code">
+                    <a th:if="${redirectUrl != null}" th:href="'https://gitee.com/oauth/authorize?client_id=65156c8b1a06dc06fc7c8ae50c8c5494c03e857e1833cf6d8c3f24e74a11b09a&redirect_uri=http://auth.mall.com/oauth2.0/gitee/success?redirect_url='+${redirectUrl}+'&response_type=code'">
+                        <img style="width: 18px;height: 18px;" src="/static/login/JD_img/gitee.png"/>
+<!--                        <span>weibo</span>-->
+                    </a>
+                    <a th:if="${redirectUrl == null}" href="https://gitee.com/oauth/authorize?client_id=65156c8b1a06dc06fc7c8ae50c8c5494c03e857e1833cf6d8c3f24e74a11b09a&redirect_uri=http://auth.mall.com/oauth2.0/gitee/success&response_type=code">
                         <img style="width: 18px;height: 18px;" src="/static/login/JD_img/gitee.png"/>
 <!--                        <span>weibo</span>-->
                     </a>

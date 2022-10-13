@@ -33,3 +33,9 @@ mybatis-plus:
       id-type: auto #自增主键
 server:
   port: 9000
+#配置线程池
+mall:
+  thread:
+    coreSize: 20
+    maxSize: 200
+    keepAliveTime: 10

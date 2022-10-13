@@ -1,6 +1,7 @@
 package com.example.order.web;
 
 import com.example.order.service.OrderService;
+import com.example.order.vo.OrderConfirmVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,10 @@ public class OrderWebController {
      */
     @GetMapping(value = "/toTrade")
     public String toTrade(Model model, HttpServletRequest request) throws ExecutionException, InterruptedException {
+
+        OrderConfirmVo confirmVo = orderService.confirmOrder();
+
+        model.addAttribute("confirmOrderData",confirmVo);
         //展示订单确认的数据
 
         return "confirm";

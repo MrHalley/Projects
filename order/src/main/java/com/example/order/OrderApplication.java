@@ -2,6 +2,7 @@ package com.example.order;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * 使用RabbitMQ
@@ -14,6 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @RabbitHandler: 重载区分不同的消息
  */
 @SpringBootApplication
+@EnableFeignClients(basePackages = "com.example.order.feign")
 public class OrderApplication {
 
     public static void main(String[] args) {

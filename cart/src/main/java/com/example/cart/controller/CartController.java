@@ -22,6 +22,19 @@ public class CartController {
     private CartService cartService;
 
     /**
+     * 获取当前用户的购物车商品项
+     * @return
+     */
+    @GetMapping(value = "/currentUserCartItems")
+    @ResponseBody
+    public List<CartItemVo> getCurrentCartItems() {
+
+        List<CartItemVo> cartItemVoList = cartService.getUserCartItems();
+
+        return cartItemVoList;
+    }
+
+    /**
      * 去购物车页面的请求
      * 浏览器有一个cookie:user-key 标识用户的身份，一个月过期
      * 如果第一次使用jd的购物车功能，都会给一个临时的用户身份:
@@ -58,7 +71,7 @@ public class CartController {
         cartService.addToCart(skuId,num);
 
         attributes.addAttribute("skuId",skuId);
-        return "redirect:http://cart.gulimall.com/addToCartSuccessPage.html";
+        return "redirect:http://cart.mall.com/addToCartSuccessPage.html";
     }
 
 
@@ -90,7 +103,7 @@ public class CartController {
 
         cartService.checkItem(skuId,checked);
 
-        return "redirect:http://cart.gulimall.com/cart.html";
+        return "redirect:http://cart.mall.com/cart.html";
 
     }
 
@@ -107,7 +120,7 @@ public class CartController {
 
         cartService.changeItemCount(skuId,num);
 
-        return "redirect:http://cart.gulimall.com/cart.html";
+        return "redirect:http://cart.mall.com/cart.html";
     }
 
 
@@ -120,7 +133,7 @@ public class CartController {
     public String deleteItem(@RequestParam("skuId") Integer skuId) {
 
         cartService.deleteIdCartInfo(skuId);
-        return "redirect:http://cart.gulimall.com/cart.html";
+        return "redirect:http://cart.mall.com/cart.html";
     }
 
 }

@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.example.common.exception.NoStockException;
 import com.example.common.to.SkuHasStockVo;
+import com.example.ware.vo.WareSkuLockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import com.example.ware.service.WareSkuService;
 import com.example.common.utils.PageUtils;
 import com.example.common.utils.R;
 
+import static com.example.common.exception.BizCodeEnum.NO_STOCK_EXCEPTION;
 
 
 /**
@@ -27,6 +30,17 @@ import com.example.common.utils.R;
 public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
+
+
+    @PostMapping(value = "/lock/order")
+    public R orderLockStock(@RequestBody WareSkuLockVo vo){
+        try{
+            boolean lockStock = wareSkuService.orderLockStock(vo);
+            return R.ok().setData(lockStock);
+        }catch (NoStockException e){
+            return R.error(NO_STOCK_EXCEPTION.getCode(),NO_STOCK_EXCEPTION.getMsg());
+        }
+    }
 
     /**
      * 查询sku是否有库存

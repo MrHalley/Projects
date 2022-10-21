@@ -1,11 +1,18 @@
 package com.example.ware.service.impl;
 
+import com.example.common.exception.NoStockException;
 import com.example.common.to.SkuHasStockVo;
 import com.example.common.utils.R;
+import com.example.ware.entity.WareOrderTaskEntity;
 import com.example.ware.feign.ProductFeignService;
+import com.example.ware.service.WareOrderTaskService;
+import com.example.ware.vo.OrderItemVo;
+import com.example.ware.vo.WareSkuLockVo;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,6 +26,8 @@ import com.example.common.utils.Query;
 import com.example.ware.dao.WareSkuDao;
 import com.example.ware.entity.WareSkuEntity;
 import com.example.ware.service.WareSkuService;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -32,6 +41,10 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
 
     @Resource
     ProductFeignService productFeignService;
+
+    @Resource
+    WareOrderTaskService wareOrderTaskService;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         /**
@@ -99,4 +112,60 @@ public class WareSkuServiceImpl extends ServiceImpl<WareSkuDao, WareSkuEntity> i
         return skuHasStockVos;
     }
 
+    /**
+     * 为某个订单锁定库存
+     * @param vo
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean orderLockStock(WareSkuLockVo vo) {
+        /**
+         * 保存库存工作单信息
+         * 追溯
+         */
+        WareOrderTaskEntity wareOrderTaskEntity = new WareOrderTaskEntity();
+        wareOrderTaskEntity.setOrderSn(vo.getOrderSn());
+        wareOrderTaskEntity.setCreateTime(new Date());
+        wareOrderTaskService.save(wareOrderTaskEntity);
+
+        //1.按照下单的收获地址，找到一个就近仓库，锁定库存
+        //2.找到每个商品在哪个仓库都有库存
+        List<OrderItemVo> locks = vo.getLocks();
+        List<SkuWareHasStock> collect = locks.stream().map((item) -> {
+            SkuWareHasStock stock = new SkuWareHasStock();
+            Long skuId = item.getSkuId();
+            stock.setSkuId(skuId);
+            stock.setNum(item.getCount());
+            //查询这个商品在哪些仓库有库存
+            List<Long> wareIdList = wareSkuDao.listWareIdHasSkuStock(skuId);
+            stock.setWareId(wareIdList);
+            return stock;
+        }).collect(Collectors.toList());
+
+        //2.锁定库存
+        for (SkuWareHasStock hasStock : collect) {
+            boolean skuStocked = false;
+            Long skuId = hasStock.getSkuId();
+            List<Long> wareIds = hasStock.getWareId();
+            if(CollectionUtils.isEmpty(wareIds)){
+                //没有任何仓库有这个商品的库存
+                throw new NoStockException(skuId);
+            }
+
+            //1.如果每一个商品都锁定成功，将当前商品锁定了几件的工作单记录发送给MQ
+            //2.锁定失败。前面保存的工作单信息都回滚了。发送出去的信息，即使要解锁库存，由于在数据库查不到指定的id，所以就不用解锁
+            for (Long wareId : wareIds) {
+                //锁定成功就返回1，失败就返回0
+
+            }
+        }
+    }
+
+    @Data
+    class SkuWareHasStock {
+        private Long skuId;
+        private Integer num;
+        private List<Long> wareId;
+    }
 }
